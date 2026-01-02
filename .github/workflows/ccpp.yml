@@ -34,24 +34,37 @@ jobs:
             which python
             python --version
             pip install cmake ninja
-      - name: Configure
+      - name: Configure static
         shell: bash -l {0}
         run: |
             if [ "$RUNNER_OS" == "Windows" ]; then
               export CC=cl.exe
               export CXX=cl.exe
             fi
-            mkdir build
-            cd build
-            cmake .. -G Ninja -DCMAKE_BUILD_TYPE=Release -Dgtest_force_shared_crt=ON
-      - name: Build
+            cmake -S . -B build -G Ninja -DCMAKE_BUILD_TYPE=Release -Dgtest_force_shared_crt=ON -DBUILD_SHARED_LIBS=OFF
+      - name: Configure shared
+        if: matrix.os != 'windows-latest'
         shell: bash -l {0}
         run: |
-            cd build
-            ninja
-      - name: Test
+            cmake -S . -B build-shared -G Ninja -DCMAKE_BUILD_TYPE=Release -Dgtest_force_shared_crt=ON -DBUILD_SHARED_LIBS=ON
+      - name: Build static
+        shell: bash -l {0}
+        run: |
+            cmake --build build
+      - name: Build shared
+        if: matrix.os != 'windows-latest'
+        shell: bash -l {0}
+        run: |
+            cmake --build build-shared
+      - name: Test static
         shell: bash -l {0}
         run: |
             cd build
             ctest
+      - name: Test shared
+        if: matrix.os != 'windows-latest'
+        shell: bash -l {0}
+        run: |
+            cd build
+            ctest build-shared
 
