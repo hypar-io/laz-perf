@@ -1,0 +1,25 @@
+{
+  "name": "laz-perf",
+  "version": "0.0.7-hypar.0",
+  "description": "LAZ implementation compiled to WASM via Emscripten for browser and node environments",
+  "main": "lib/node/index.js",
+  "browser": "lib/web/index.js",
+  "types": "lib/node/index.d.ts",
+  "homepage": "https://github.com/hypar-io/laz-perf",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/hypar-io/laz-perf.git"
+  },
+  "keywords": [
+    "3d",
+    "laz",
+    "laszip",
+    "point cloud",
+    "lidar",
+    "gis"
+  ],
+  "license": "Apache-2.0",
+  "files": [
+    "lib/**/*"
+  ]
+}
